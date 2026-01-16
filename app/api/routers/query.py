@@ -41,8 +41,15 @@ def summarize(payload: SearchRequest):
 
 @router.post("/stream-summary")
 def stream_summary_endpoint(payload: SearchRequest):
-    prompt = build_summary_prompt(payload)
+
+    # 1) Retrieve articles first
+    articles = semantic_search(payload.query, payload.top_k)
+
+    # 2) Build prompt correctly
+    prompt = build_summary_prompt(payload.query, articles)
+
     return StreamingResponse(
         stream_summary(prompt),
         media_type="text/plain"
     )
+
