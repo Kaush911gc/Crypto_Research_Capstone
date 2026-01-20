@@ -3,7 +3,7 @@ import uuid
 
 
 def normalize_article(article: dict) -> dict:
-    url = article.get("url")
+    url = article.get("url") or ""
 
     url_hash = hashlib.sha256(
         url.encode("utf-8")

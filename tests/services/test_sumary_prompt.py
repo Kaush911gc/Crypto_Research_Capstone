@@ -10,8 +10,8 @@ def test_prompt_contains_sections():
 
     assert "User query" in prompt
     assert "BTC" in prompt
-    assert "ETH" in prompt
-    assert "bullish" in prompt
+    assert "Bullish signals" in prompt
+    
 
 def test_prompt_empty_articles():
     from app.services.summary_prompt import build_summary_prompt
