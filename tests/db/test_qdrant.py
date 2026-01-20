@@ -30,3 +30,14 @@ def test_upsert_format(monkeypatch, sample_article):
     assert "vector" not in point.payload
     assert "id" not in point.payload
     assert point.payload["title"] == sample_article["title"]
+
+def test_upsert_empty(monkeypatch):
+
+    monkeypatch.setattr(
+        "app.db.qdrant.get_qdrant_client",
+        lambda: type("C", (), {"upsert": lambda *a, **k: None})()
+    )
+
+    from app.db.qdrant import upsert_articles
+
+    assert upsert_articles([]) == 0

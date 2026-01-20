@@ -46,3 +46,18 @@ def upsert_articles(articles: list[dict]) -> None:
         collection_name=COLLECTION_NAME,
         points=points)
     return len(points)
+
+def test_init_skip(monkeypatch):
+    class Fake:
+        def get_collections(self):
+            return type("x", (), {
+                "collections": [type("c", (), {"name":"crypto_news"})]
+            })
+
+    monkeypatch.setattr(
+        "app.db.qdrant.get_qdrant_client",
+        lambda: Fake()
+    )
+
+    from app.db.qdrant import init_collection
+    init_collection()   # should not crash
